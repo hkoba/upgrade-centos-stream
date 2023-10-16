@@ -75,6 +75,6 @@ namespace eval centos-util {
     }
 }
 
-if {![info level] && [info script] eq $::argv0} {
+if {![info level] && [info exists ::argv0] && [info script] eq $::argv0} {
     puts [join [centos-util::latest-dist-rpms 9] \n]
 }
