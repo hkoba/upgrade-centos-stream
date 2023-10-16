@@ -39,6 +39,7 @@ snit::type steps {
             set RESULT {}
             proc RUN args {lappend ::RESULT [list RUN {*}$args]}
             proc =RUN args {exec -ignorestderr {*}$args 2>@ stderr}
+            proc ?RUN? args {lappend ::RESULT [list ?RUN? {*}$args]}
             proc **  args {lappend ::RESULT [list **  {*}$args]}
         }
         $myInterp eval $cmd
