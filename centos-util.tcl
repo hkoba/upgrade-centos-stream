@@ -4,11 +4,10 @@
 exec tclsh "$0" ${1+"$@"}
 
 package require http
-if {![catch {package require tls}]} {
-    # "-autoservername true" for "error: sslv3 alert handshake failure"
-    # See: https://wiki.tcl-lang.org/page/HTTPS
-    http::register https 443 [list tls::socket -autoservername true]
-}
+package require tls
+# "-autoservername true" for "error: sslv3 alert handshake failure"
+# See: https://wiki.tcl-lang.org/page/HTTPS
+http::register https 443 [list tls::socket -autoservername true]
 
 namespace eval centos-util {
     ::variable distUrl https://mirror.stream.centos.org/%d-stream/BaseOS/x86_64/os/Packages/
