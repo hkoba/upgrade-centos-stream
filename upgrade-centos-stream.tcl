@@ -5,7 +5,7 @@ exec tclsh "$0" ${1+"$@"}
 
 # This script tries to upgrade CentOS Stream 8 to CS9.
 #
-# Each steps are taken from the following article:
+# Most of each step is taken from the following article:
 # https://ahelpme.com/linux/centos-stream-9/how-to-upgrade-to-centos-stream-9-from-centos-stream-8/
 
 package require cmdline
@@ -31,6 +31,23 @@ STEP -doc {
     All installed packages should be updated to the latest versions.
 } -command {
     RUN dnf update -y
+}
+
+if {[file exists /etc/.git]} {
+    STEP -doc {
+        Test /etc git status.
+    } -command {
+        RUN git -C /etc status -su
+    }
+}
+
+STEP -doc {
+    Ensure 3rd party dnf repos refer el$releasever instead of el8.
+} -command {
+    set files [=RUN grep -l el8 {*}[glob /etc/yum.repos.d/*.repo]]
+    if {$files ne ""} {
+        RUN sed -i -e {s/el8/el$releasever/g} {*}$files
+    }
 }
 
 STEP -doc {
