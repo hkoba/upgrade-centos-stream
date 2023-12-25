@@ -42,11 +42,14 @@ if {[file exists /etc/.git]} {
 }
 
 STEP -doc {
-    Ensure 3rd party dnf repos refer el$releasever instead of el8.
+    Ensure 3rd party dnf repos refer el9 instead of el8.
 } -command {
+    # XXX: I want to use '$releasever' here, but when I used it,
+    # I observed some repos failed to sync
+    # during `dnf --releasever=9-stream distrosync`.
     set files [=RUN grep -l el8 {*}[glob /etc/yum.repos.d/*.repo]]
     if {$files ne ""} {
-        RUN sed -i -e {s/el8/el$releasever/g} {*}$files
+        RUN sed -i -e {s/el8/el9/g} {*}$files
     }
 }
 
