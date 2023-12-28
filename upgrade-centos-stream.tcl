@@ -108,7 +108,7 @@ STEP -doc {
 } -command {
     if {[file exists /etc/dnf/plugins/subscription-manager.conf]
         &&
-        [catch {=RUN rpm -q subscription-manager}]} {
+        ![catch {=RUN rpm -q subscription-manager}]} {
         RUN dnf remove -y subscription-manager
     }
 }
